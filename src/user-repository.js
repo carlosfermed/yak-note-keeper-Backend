@@ -1,7 +1,7 @@
 const DBLocal = require("db-local");
 const crypto = require("crypto");
 const bcrypt = require("bcrypt");
-const { Schema } = new DBLocal({ path: "../yakdb" });
+const { Schema } = new DBLocal({ path: "./yakdb" });
 
 const User = Schema("Creators", {
     _id: { type: String, required: true },
