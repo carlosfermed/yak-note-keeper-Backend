@@ -2,11 +2,11 @@ const express = require("express");
 const session = require("express-session"); // https://www.npmjs.com/package/express-session
 const cors = require("cors");
 const fetch = require("node-fetch");        // https://stackoverflow.com/questions/70541068/instead-change-the-require-of-index-js-to-a-dynamic-import-which-is-available
-const UserRespository = require("./user-repository");
+const UserRepository = require("./user-repository");
 const app = express();
 
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 
@@ -33,7 +33,7 @@ app.post("/login", (req, res) => {
     const {username, password} = req.body;
 
     try {
-        const userName = UserRespository.login({username, password});
+        const userName = UserRepository.login({username, password});
         if (userName) {
             req.session.user = userName;
             res.status(200).send({message: "Login exitoso."});        
@@ -53,7 +53,7 @@ app.post("/register", (req, res) => {
     // console.log('typeof username :>> ', typeof username);
 
     try {
-        const id = UserRespository.create({username, password});
+        const id = UserRepository.create({username, password});
         res.status(201).send({id: id, message: "Usuario creado con éxito."});  
     }
     catch (error) {
@@ -64,7 +64,7 @@ app.post("/register", (req, res) => {
 app.post("/logout", (req, res) => {
     req.session.destroy((err) => {
         if (err) {
-            return res.status(500).send({ message: 'Error cerrando sesión' });
+            return res.status(500).send({ message: "Error al cerrar sesión." });
         }
         res.clearCookie('connect.sid');
         res.status(200).send({ message: "Logout exitoso." });
@@ -75,7 +75,7 @@ function isAuthenticated(req, res, next) {
     if (req.session.user) {
         return next(); 
     } else {
-        res.status(401).send({ message: 'No autorizado' }); 
+        res.status(401).send("<h2 style='text-align:center'>No autorizado.</h2>"); 
     }
 }
 
