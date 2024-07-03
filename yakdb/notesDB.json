@@ -44,46 +44,6 @@
       "id": "1718710918389",
       "content": "Cita médica dia 24/7/24 Dr. Rubio.",
       "important": "true"
-    },
-    {
-      "id": "1719999578265",
-      "content": "primera nota sin importancia",
-      "important": "false"
-    },
-    {
-      "id": "1720000256624",
-      "content": "primera nota sin importancia olivia",
-      "important": "false"
-    },
-    {
-      "id": "1720000547146",
-      "content": "segunda nota sin importancia olivia",
-      "important": "false"
-    },
-    {
-      "id": "1720000610189",
-      "content": "tercera nota sin importancia olivia",
-      "important": "false"
-    },
-    {
-      "id": "1720005068545",
-      "content": "alejandro primera nota importante",
-      "important": "true"
-    },
-    {
-      "id": "1720005135024",
-      "content": "alejandro segunda nota no importante",
-      "important": "false"
-    },
-    {
-      "id": "1720005987806",
-      "content": "nota sin importancia",
-      "important": "false"
-    },
-    {
-      "id": "1720006022673",
-      "content": "otra nota mas",
-      "important": "false"
     }
   ]
 }

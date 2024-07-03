@@ -83,7 +83,7 @@ function isAuthenticated(req, res, next) {
 app.get("/protected", isAuthenticated, async (req, res) => {
 
     const fecha = new Date(Date.now());
-    const logSolicitudDatos = `Usuario que solicita los datos --> ${req.session.user.username} /// Hora de la solicitud --> 
+    const logSolicitudDatos = `Usuario solicita datos de las notas: ${req.session.user.username} /// Fecha y hora --> 
         ${fecha.getHours()}:${fecha.getMinutes()} - ${fecha.getDay()}/${fecha.getMonth()}/${fecha.getFullYear()}`;
 
     console.log('logSolicitudDatos :>> ', logSolicitudDatos);
@@ -103,7 +103,7 @@ app.post("/protected", isAuthenticated, async (req, res) => {
 
     const fecha = new Date(Date.now());
 
-    const logGuardarNota = `Usuario que añade nota --> ${req.session.user} / Hora de la solicitud --> 
+    const logGuardarNota = `Usuario que añade nota: ${req.session.user.username} /// Fecha y hora --> 
     ${fecha.getHours()}:${fecha.getMinutes()} - ${fecha.getDay()}/${fecha.getMonth()}/${fecha.getFullYear()}`;
 
     console.log('logGuardarNota :>> ', logGuardarNota);
@@ -122,10 +122,10 @@ app.post("/protected", isAuthenticated, async (req, res) => {
             if (!response.ok) {
                 throw new Error(`HTTP error, código de estado: ${response.status}`);
             }
-            response.json();
+            return response.json();
         })
         .then(data => { 
-            console.log("Nueva nota añadida: ", data.content); 
+            console.log("Nueva nota añadida: ", data); 
             res.status(201).send({message: "Nota creada con éxito."});
         })
         .catch(error => {
