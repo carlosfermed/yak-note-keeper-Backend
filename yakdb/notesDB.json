@@ -1,0 +1,69 @@
+{
+  "notes": [
+    {
+      "id": "1713713312962",
+      "content": "Good design adds value faster than it adds cost.",
+      "important": "false"
+    },
+    {
+      "id": "1713713345896",
+      "content": "GET and POST are the most important methods of HTTP protocol.",
+      "important": "true"
+    },
+    {
+      "id": "1713713347105",
+      "content": "Browser can execute only JavaScript.",
+      "important": "true"
+    },
+    {
+      "id": "1713713420995",
+      "content": "In theory, theory and practice are the same. In practice, they’re not.",
+      "important": "false"
+    },
+    {
+      "id": "1713713420997",
+      "content": "Beware of bugs in the above code, I have only proved it correct, not tried it.",
+      "important": "false"
+    },
+    {
+      "id": "1713713420999",
+      "content": "Always code as if the guy who ends up maintaining your code will be a violent psychopath who knows where you live.",
+      "important": "true"
+    },
+    {
+      "id": "1718444696253",
+      "content": "Es una nota sin importancia.",
+      "important": "false"
+    },
+    {
+      "id": "1718563093079",
+      "content": "Nota a tener en cuenta para gestión de código.",
+      "important": "true"
+    },
+    {
+      "id": "1718710918389",
+      "content": "Cita médica dia 24/7/24 Dr. Rubio.",
+      "important": "true"
+    },
+    {
+      "id": "1719999578265",
+      "content": "primera nota sin importancia",
+      "important": "false"
+    },
+    {
+      "id": "1720000256624",
+      "content": "primera nota sin importancia olivia",
+      "important": "false"
+    },
+    {
+      "id": "1720000547146",
+      "content": "segunda nota sin importancia olivia",
+      "important": "false"
+    },
+    {
+      "id": "1720000610189",
+      "content": "tercera nota sin importancia olivia",
+      "important": "false"
+    }
+  ]
+}

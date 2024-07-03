@@ -3,13 +3,13 @@ const crypto = require("crypto");
 const bcrypt = require("bcrypt");
 const { Schema } = new DBLocal({ path: "./yakdb" });
 
-const User = Schema("Creators", {
+const User = Schema("usersDB", {
     _id: { type: String, required: true },
     username: { type: String, required: true },
     password: { type: String, required: true }
 });
 
-class UserRespository {
+class UserRepository {
     static create({username, password}){
         
         userValidation(username, password);
@@ -58,4 +58,4 @@ const userValidation = (username, password) => {
     if (password.length < 4) throw new Error("La contraseña debe superar los 3 caracteres.");    
 }
 
-module.exports = UserRespository;
+module.exports = UserRepository;
