@@ -64,6 +64,26 @@
       "id": "1720000610189",
       "content": "tercera nota sin importancia olivia",
       "important": "false"
+    },
+    {
+      "id": "1720005068545",
+      "content": "alejandro primera nota importante",
+      "important": "true"
+    },
+    {
+      "id": "1720005135024",
+      "content": "alejandro segunda nota no importante",
+      "important": "false"
+    },
+    {
+      "id": "1720005987806",
+      "content": "nota sin importancia",
+      "important": "false"
+    },
+    {
+      "id": "1720006022673",
+      "content": "otra nota mas",
+      "important": "false"
     }
   ]
 }

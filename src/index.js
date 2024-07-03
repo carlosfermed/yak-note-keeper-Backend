@@ -16,17 +16,17 @@ app.use(cors({
 }));
 
 app.use(session({
-    secret: 'miSecreto',            // Cadena única.
+    secret: 'miSecreto',                // Cadena única.
     resave: false,                  
     saveUninitialized: false, 
     cookie: { 
         secure: false,              
-        maxAge: 24 * 60 * 60 * 1000 // Vida útil de la cookie: 24 horas.
+        maxAge: 24 * 60 * 60 * 1000     // Vida útil de la cookie: 24 horas.
     }
 }));
 
 app.get("/", (req, res) => {
-    res.send("<h1>Hola bienvenido...</h1>");
+    res.send("<h1>Hola, bienvenido a YAK application...</h1>");
 });
 
 app.post("/login", (req, res) => {
@@ -34,42 +34,34 @@ app.post("/login", (req, res) => {
 
     try {
         const userName = UserRepository.login({username, password});
-        if (userName) {
-            req.session.user = userName;
-            req.session.save(err => {
-                if (err) {
-                    console.log(err);
-                    return res.status(500).send({ message: "Error guardando la sesión." });
-                }
-                res.status(200).send({ message: "Login exitoso." });
-            }); 
-        }
-        else {
-            res.status(401).send({ message: "Credenciales incorrectas." });
-        }
-    }
-    catch (error) {
-        res.status(401).send(error.message);
+        
+        req.session.user = userName;
+        req.session.save(error => {     // Aseguramos que cualquier error producido al guardar sesión sea manejado.
+            if (error) {
+                console.error("Error guardando la sesión:", error);
+                return res.status(500).send({ message: "Error guardando la sesión." });
+            }
+            res.status(200).send({ message: "Login exitoso." });
+        });         
+    } catch (error) {
+        res.status(401).send({ message: error.message });
     }
 });
 
 app.post("/register", (req, res) => {
     const {username, password} = req.body;
-    // console.log('req.body :>> ', req.body);
-    // console.log('typeof username :>> ', typeof username);
 
     try {
         const id = UserRepository.create({username, password});
         res.status(201).send({id: id, message: "Usuario creado con éxito."});  
-    }
-    catch (error) {
+    } catch (error) {
         res.status(400).send({message: "El usuario ya existe"});
     }    
 });
 
 app.post("/logout", (req, res) => {
-    req.session.destroy((err) => {
-        if (err) {
+    req.session.destroy((error) => {
+        if (error) {
             return res.status(500).send({ message: "Error al cerrar sesión." });
         }
         res.clearCookie('connect.sid');
@@ -78,8 +70,8 @@ app.post("/logout", (req, res) => {
 });
 
 function isAuthenticated(req, res, next) {
-    console.log("req.session.user", req.session.user)  //////////////////////////////////////
-    console.log("req.session", req.session)  //////////////////////////////////////
+    // console.log("req.session.user", req.session.user)  
+    // console.log("req.session", req.session) 
 
     if (req.session.user) {
         return next(); 
@@ -89,10 +81,13 @@ function isAuthenticated(req, res, next) {
 }
 
 app.get("/protected", isAuthenticated, async (req, res) => {
-    // console.log("req.session.user typeof ---> ", typeof req.session.user);
+
     const fecha = new Date(Date.now());
-    console.log("Usuario que solicita los datos -->", req.session.user, " / Hora de la solicitud -->", 
-        `${fecha.getHours()}:${fecha.getMinutes()}`, fecha.getFullYear(), fecha.getDay(), );
+    const logSolicitudDatos = `Usuario que solicita los datos --> ${req.session.user.username} /// Hora de la solicitud --> 
+        ${fecha.getHours()}:${fecha.getMinutes()} - ${fecha.getDay()}/${fecha.getMonth()}/${fecha.getFullYear()}`;
+
+    console.log('logSolicitudDatos :>> ', logSolicitudDatos);
+    // Introducir método que guarde el log en un archivo txt.
 
     try {
         const response = await fetch("http://localhost:3001/notes");
@@ -105,32 +100,38 @@ app.get("/protected", isAuthenticated, async (req, res) => {
 });
 
 app.post("/protected", isAuthenticated, async (req, res) => {
-    // console.log("req.session.user typeof ---> ", typeof req.session.user);
-    const fecha = new Date(Date.now());
-    console.log("Usuario que añade nota -->", req.session.user, " / Hora de la solicitud -->", 
-        `${fecha.getHours()}:${fecha.getMinutes()}`, fecha.getFullYear(), fecha.getDay(), );
 
-    console.log("POST /protected req.body", req.body)   //////////////////////////////////////////////////////////////////
+    const fecha = new Date(Date.now());
+
+    const logGuardarNota = `Usuario que añade nota --> ${req.session.user} / Hora de la solicitud --> 
+    ${fecha.getHours()}:${fecha.getMinutes()} - ${fecha.getDay()}/${fecha.getMonth()}/${fecha.getFullYear()}`;
+
+    console.log('logGuardarNota :>> ', logGuardarNota);
+    // Introducir método que guarde el log en un archivo txt.
+ 
     const noteData = req.body;
 
-    try {
-        fetch("http://localhost:3001/notes", {
-            method: "POST",
-            body: JSON.stringify(noteData),
-            headers: {
-                "Content-Type": "application/json",
+    fetch("http://localhost:3001/notes", {
+        method: "POST",
+        body: JSON.stringify(noteData),
+        headers: {
+            "Content-Type": "application/json",
+        }
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error, código de estado: ${response.status}`);
             }
+            response.json();
         })
-            .then(response => response.json())
-            .then(noteSaved => { 
-                console.log("Nueva nota añadida: ", noteSaved.content); 
-                res.status(201).send({message: "Nota creada con éxito."});
-            })
-            .catch(err => console.log(err));
-        
-    } catch (error) {
-        res.status(500).send(error.message);
-    }
+        .then(data => { 
+            console.log("Nueva nota añadida: ", data.content); 
+            res.status(201).send({message: "Nota creada con éxito."});
+        })
+        .catch(error => {
+            console.log(error)
+            res.status(500).send(error.message);
+        });
 });
 
 app.listen(PORT, () => console.log("Servidor escuchando por puerto", PORT))
