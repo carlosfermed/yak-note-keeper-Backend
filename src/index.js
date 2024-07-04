@@ -2,6 +2,8 @@ const express = require("express");
 const session = require("express-session"); // https://www.npmjs.com/package/express-session
 const cors = require("cors");
 const authsessionRouter = require("./routes/authSession");
+const authTokenRouter = require("./routes/authToken");
+require("dotenv").config();
 const expressApp = express();
 
 const PORT = process.env.PORT || 3000;
@@ -27,5 +29,6 @@ expressApp.get("/", (req, res) => {
     res.send("<h2>Hola, esto es solo un mensaje de bienvenida a YAK application...")
 })
 expressApp.use("/authsession", authsessionRouter);
+expressApp.use("/authtoken", authTokenRouter);
 
 expressApp.listen(PORT, () => console.log("Servidor escuchando por puerto", PORT))

@@ -1,8 +1,9 @@
 const express = require("express");
 const fetch = require("node-fetch");    // https://stackoverflow.com/questions/70541068/instead-change-the-require-of-index-js-to-a-dynamic-import-which-is-available
-const UserRepository = require("../user-repository");
-const authsessionRouter = express.Router();
+const UserRepository = require("../services/user-repository");
 const writeLogInFile = require("../utils/logger");
+const isAuthenticated = require("../middlewares/isAuthenticated");
+const authsessionRouter = express.Router();
 
 
 authsessionRouter.post("/login", (req, res) => {
@@ -45,21 +46,12 @@ authsessionRouter.post("/logout", (req, res) => {
     });
 });
 
-function isAuthenticated(req, res, next) {
-    // console.log("req.session.user", req.session.user)  
-    // console.log("req.session", req.session) 
-
-    if (req.session.user) {
-        return next(); 
-    } else {
-        res.status(401).send({message: "No autorizado."}); 
-    }
-}
+/// isAuthenticated
 
 authsessionRouter.get("/protected", isAuthenticated, async (req, res) => {
 
     const fecha = new Date(Date.now());
-    const logSolicitudDatos = `Usuario que solicita datos (notas)>> ${req.session.user.username} /// Fecha y hora --> ${fecha.getHours()}:${fecha.getMinutes()} - ${fecha.getDay()}/${fecha.getMonth()}/${fecha.getFullYear()}\n`;
+    const logSolicitudDatos = `Usuario solicita notas >> ${req.session.user.username} :: Fecha y hora --> ${fecha.getHours()}:${fecha.getMinutes()} - ${fecha.getDay()}/${fecha.getMonth()}/${fecha.getFullYear()}\n`;
 
     console.log('logSolicitudDatos :>> ', logSolicitudDatos);
     // Introducir método que guarde el log en un archivo txt.
@@ -80,7 +72,7 @@ authsessionRouter.post("/protected", isAuthenticated, async (req, res) => {
     const fecha = new Date(Date.now());
     const noteData = req.body;
 
-    const logGuardarNota = `Usuario que añade la nota >> ${req.session.user.username} /// Fecha y hora --> ${fecha.getHours()}:${fecha.getMinutes()} - ${fecha.getDay()}/${fecha.getMonth()}/${fecha.getFullYear()}\n`;
+    const logGuardarNota = `Usuario añade nota >> ${req.session.user.username} :: Fecha y hora --> ${fecha.getHours()}:${fecha.getMinutes()} - ${fecha.getDay()}/${fecha.getMonth()}/${fecha.getFullYear()}\n`;
 
     console.log('logGuardarNota :>> ', logGuardarNota);
     // Introducir método que guarde el log en un archivo txt.

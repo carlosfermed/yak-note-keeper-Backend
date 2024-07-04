@@ -44,31 +44,6 @@
       "id": "1718710918389",
       "content": "Cita médica dia 24/7/24 Dr. Rubio.",
       "important": "true"
-    },
-    {
-      "id": "1720025759226",
-      "content": "primera nota añadida por Olivia importante",
-      "important": "true"
-    },
-    {
-      "id": "1720025768215",
-      "content": "segunda nota añadida por Olivia importante",
-      "important": "true"
-    },
-    {
-      "id": "1720025782962",
-      "content": "tercera nota añadida por Olivia sin importancia",
-      "important": "false"
-    },
-    {
-      "id": "1720026887578",
-      "content": "Nota a tener en cuenta",
-      "important": "true"
-    },
-    {
-      "id": "1720027083850",
-      "content": "Nota sin importancia",
-      "important": "false"
     }
   ]
 }
