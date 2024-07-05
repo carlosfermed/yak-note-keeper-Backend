@@ -3,10 +3,12 @@ const session = require("express-session"); // https://www.npmjs.com/package/exp
 const cors = require("cors");
 const authsessionRouter = require("./routes/authSession");
 const authTokenRouter = require("./routes/authToken");
+
 require("dotenv").config();
+
 const expressApp = express();
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT;
 
 expressApp.use(express.json());
 

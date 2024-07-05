@@ -3,6 +3,8 @@ const fetch = require("node-fetch");    // https://stackoverflow.com/questions/7
 const UserRepository = require("../services/user-repository");
 const writeLogInFile = require("../utils/logger");
 const isAuthenticated = require("../middlewares/isAuthenticated");
+const jwt = require("jsonwebtoken");
+
 const authsessionRouter = express.Router();
 
 
@@ -13,11 +15,22 @@ authsessionRouter.post("/login", (req, res) => {
         const userName = UserRepository.login({username, password});
         
         req.session.user = userName;
+        console.log('req.session.user :>> ', req.session.user);
+        console.log('userName :>> ', userName);
         req.session.save(error => {     // Aseguramos que cualquier error producido al guardar sesión sea manejado.
             if (error) {
                 console.error("Error guardando la sesión:", error);
                 return res.status(500).send({ message: "Error guardando la sesión." });
             }
+            
+            const payload = {
+                sub: req.session.user.username
+            }
+
+            const token = jwt.sign(payload, process.env.SECRET_KEY, {expiresIn: '1h'});
+
+            res.cookie("token", token, {httpOnly: true});
+
             res.status(200).send({ message: "Login exitoso." });
         });         
     } catch (error) {
@@ -51,7 +64,7 @@ authsessionRouter.post("/logout", (req, res) => {
 authsessionRouter.get("/protected", isAuthenticated, async (req, res) => {
 
     const fecha = new Date(Date.now());
-    const logSolicitudDatos = `Usuario solicita notas >> ${req.session.user.username} :: Fecha y hora --> ${fecha.getHours()}:${fecha.getMinutes()} - ${fecha.getDay()}/${fecha.getMonth()}/${fecha.getFullYear()}\n`;
+    const logSolicitudDatos = `Usuario solicita notas >> ${req.session.user.username} :: Fecha y hora --> ${fecha.getHours()}:${fecha.getMinutes() < 10 ? '0' + fecha.getMinutes() : fecha.getMinutes()} - ${fecha.getDay()}/${fecha.getMonth()}/${fecha.getFullYear()}\n`;
 
     console.log('logSolicitudDatos :>> ', logSolicitudDatos);
     // Introducir método que guarde el log en un archivo txt.
