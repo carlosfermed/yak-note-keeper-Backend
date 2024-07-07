@@ -59,16 +59,11 @@ authsessionRouter.post("/logout", (req, res) => {
     });
 });
 
-/// isAuthenticated
-
 authsessionRouter.get("/protected", isAuthenticated, async (req, res) => {
 
-    const fecha = new Date(Date.now());
-    const logSolicitudDatos = `Usuario solicita notas >> ${req.session.user.username} :: Fecha y hora --> ${fecha.getHours()}:${fecha.getMinutes() < 10 ? '0' + fecha.getMinutes() : fecha.getMinutes()} - ${fecha.getDay()}/${fecha.getMonth()}/${fecha.getFullYear()}\n`;
-
-    console.log('logSolicitudDatos :>> ', logSolicitudDatos);
-    // Introducir método que guarde el log en un archivo txt.
-    writeLogInFile(logSolicitudDatos);
+    const nombreUsuario = req.session.user.username;
+    
+    writeLogInFile(new Date(Date.now()), nombreUsuario, "solicita notas");
 
     try {
         const response = await fetch("http://localhost:3001/notes");
@@ -82,14 +77,10 @@ authsessionRouter.get("/protected", isAuthenticated, async (req, res) => {
 
 authsessionRouter.post("/protected", isAuthenticated, async (req, res) => {
 
-    const fecha = new Date(Date.now());
     const noteData = req.body;
+    const nombreUsuario = req.session.user.username;
 
-    const logGuardarNota = `Usuario añade nota >> ${req.session.user.username} :: Fecha y hora --> ${fecha.getHours()}:${fecha.getMinutes()} - ${fecha.getDay()}/${fecha.getMonth()}/${fecha.getFullYear()}\n`;
-
-    console.log('logGuardarNota :>> ', logGuardarNota);
-    // Introducir método que guarde el log en un archivo txt.
-    writeLogInFile(logGuardarNota);
+    writeLogInFile(new Date(Date.now()), nombreUsuario, "escribe nota");
 
     fetch("http://localhost:3001/notes", {
         method: "POST",

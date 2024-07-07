@@ -9,11 +9,11 @@ authTokenRouter.get("/protectedinfo", (req, res) => {
     
     try {
         const decoded = jwt.verify(req.cookies.token, process.env.SECRET_KEY);
-        console.log(decoded);
+        console.log("Decoded info:", decoded);
 
         res.send("Acceso a información confidencial autorizado.");
-    }
-    catch (err) {
+        
+    } catch (err) {
         res.status(401).end();
     }
 })
